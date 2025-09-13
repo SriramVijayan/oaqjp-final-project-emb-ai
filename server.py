@@ -12,10 +12,14 @@ def main_page_render():
 def run_emotion_detection():
     text_to_analyze = request.args.get('textToAnalyze')
     output = emotion_detector(text_to_analyze)
-    formatted_response = f"For the given statement, the system response \
-    is 'anger': {output['anger']}, 'disgust': {output['disgust']}, 'fear': {output['fear']}, \
-    'joy': {output['joy']}, 'sadness': {output['sadness']}. The dominant emotion is <b>{output['dominant_emotion']}</b>."
-    return formatted_response, 200
+    if output['dominant_emotion'] == None:
+        formatted_response = f"<b>Invalid text! Please try again!</b>"
+        return formatted_response
+    else:
+        formatted_response = f"For the given statement, the system response \
+        is 'anger': {output['anger']}, 'disgust': {output['disgust']}, 'fear': {output['fear']}, \
+        'joy': {output['joy']}, 'sadness': {output['sadness']}. The dominant emotion is <b>{output['dominant_emotion']}</b>."
+        return formatted_response, 200
 
 if __name__ == "__main__":
     app.run(debug = True)
